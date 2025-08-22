@@ -9,10 +9,13 @@ import csv
 
 stop_event = Event()
 
-# -------------------------------------------------------<>
-# Funções principais
-# -------------------------------------------------------<>
-
+#                                                        _____
+#                                                    -__/_____\__-
+# -------------------------------------------------<>   /-----\
+# Funções principais                                |  d|° _ °|p //=======-       --→
+# -------------------------------------------------<>   \__-__/  ||┘
+2
+                                                        
 lines = []
 current_index = 0 
 situacao_do_simples = None
@@ -38,9 +41,9 @@ def copy_cnpj():
     if len(clean_line) > 1:
         ultimo_cnpj = clean_line[1]
         pyperclip.copy(clean_line[1])
-        print(f"CNPJ {current_index+1}: {clean_line[1]} copiado")
+        print(f"🍀 CNPJ {current_index+1}: {clean_line[1]} copiado")
     else:
-        print(f"Linha {current_index+1} inválida:", line)
+        print(f"🟥 Linha {current_index+1} inválida:", line)
 
     current_index += 1
     
@@ -66,38 +69,38 @@ async def play_deleted():
 
             if icon:
                 copy_cnpj()
-                print(f"Ícone principal encontrado em: {icon}")
+                print(f"☑️ Ícone principal encontrado em: {icon}")
                 x, y = icon
                 pyautogui.click(x, y + 25)
                 await asyncio.sleep(0.1)
                 pyautogui.hotkey('ctrl', 'v')
-                print("CTRL + V")
+                print("↩️ CTRL + V")
 
             consultar = None
             try:
-                consultar = pyautogui.locateCenterOnScreen("imgs/consultar.png", confidence=0.8)
+                consultar = pyautogui.locateCenterOnScreen("imgs/consultar.png", confidence=0.9)
             except pyautogui.ImageNotFoundException:
                 pass
 
             if consultar:
-                print("Ícone de consultar encontrado")
+                print("☑️ Ícone de consultar encontrado")
                 pyautogui.click(consultar)
                 await asyncio.sleep(0.1)
                 
             cnpj_not_found = None
             try:
-                cnpj_not_found = pyautogui.locateCenterOnScreen("imgs/cnpj_not_found.png", confidence=0.8)
+                cnpj_not_found = pyautogui.locateCenterOnScreen("imgs/cnpj_not_found.png", confidence=0.9)
             except pyautogui.ImageNotFoundException:
                 pass
             
             cnpj_field = None
             if(cnpj_not_found):
-                print("CNPJ NOT FOUND ")
+                print("🟥 CNPJ NOT FOUND ")
                 try:
                     cnpj_field = pyautogui.locateCenterOnScreen("imgs/imagea.png", confidence=0.8)
                     if (cnpj_field):
                         copy_cnpj()
-                        print(f"Ícone principal encontrado em: {cnpj_field}")
+                        print(f"☑️ Ícone principal encontrado em: {cnpj_field}")
                         x, y = cnpj_field
                         pyautogui.click(x, y + 25)
                         pyautogui.hotkey('ctrl', 'a')
@@ -114,22 +117,22 @@ async def play_deleted():
             
             try:
                 situation_simple_false = pyautogui.locateCenterOnScreen("imgs/situacaodesimples.png")
-                print(f"Icone de situação do simples encontrado {situation_simple_false}")
+                print(f"☑️ Icone de situação do simples encontrado {situation_simple_false}")
             except pyautogui.ImageNotFoundException:
                 pass
             
             if(situation_simple_false):
                 situacao_do_simples = False
-                print(f"Situação do simples é {situacao_do_simples}")
+                print(f"💭 Situação do simples é {situacao_do_simples}")
                 try:
                     back_image = pyautogui.locateCenterOnScreen("imgs/icon_voltar.png")
-                    print(f"Icon voltar encontrado em {back_image}")
+                    print(f"☑️Ícone voltar encontrado em {back_image}")
                 except pyautogui.ImageNotFoundException:
                     pass
             
             try:
                 situation_simple_true = pyautogui.locateCenterOnScreen("imgs/optante_simples.png")
-                print(f"Icone de situação do simples encontrado {situation_simple_false}")
+                print(f"☑️Ícone de situação do simples encontrado {situation_simple_false}")
             except pyautogui.ImageNotFoundException:
                 pass
             
@@ -138,24 +141,24 @@ async def play_deleted():
                 print(f"Situação do simples é {situacao_do_simples}")
                 try:
                     back_image = pyautogui.locateCenterOnScreen("imgs/icon_voltar.png")
-                    print(f"Icon voltar encontrado em {back_image}")
+                    print(f"☑️Icone voltar encontrado em {back_image}")
                 except pyautogui.ImageNotFoundException:
                     pass
             
             if situacao_do_simples is True:
-                print("True")
+                print("💚 True")
                 salvar_resultado(ultimo_cnpj, situacao_do_simples)
                 situacao_do_simples = None 
             elif situacao_do_simples is False:
-                print("False")
+                print("❤️ False")
                 salvar_resultado(ultimo_cnpj, situacao_do_simples)
                 situacao_do_simples = None
             else:
-                print("Not Found")
+                print("🔁 Not Found")
                     
             
             if(back_image):
-                print(f"Ícone principal encontrado em: {back_image}")
+                print(f"☑️Ícone principal encontrado em: {back_image}")
                 x, y = back_image
                 pyautogui.click(x, y)
                 
@@ -165,9 +168,9 @@ async def play_deleted():
             traceback.print_exc()
             await asyncio.sleep(0.5)
 
-# -------------------
-# Gerenciamento de tasks
-# -------------------
+# -------------------------------------------------<>
+# Gerenciamento de tasks                            |
+# -------------------------------------------------<>
 
 loop = asyncio.new_event_loop()
 
@@ -175,17 +178,16 @@ def run_loop():
     asyncio.set_event_loop(loop)
     loop.run_forever()
 
-# Start asyncio em um thread separado
 Thread(target=run_loop, daemon=True).start()
 
 def start_play():
     stop_event.clear()
     fut = asyncio.run_coroutine_threadsafe(play_deleted(), loop)
-    print("Play iniciado")
+    print("🍏 Play iniciado")
 
 def stop_play():
     stop_event.set()
-    print("Play parado")
+    print("🍎 Play parado")
 
 def listen_hotkey():
     keyboard.add_hotkey('ctrl+0', stop_play)
@@ -193,9 +195,9 @@ def listen_hotkey():
 
 Thread(target=listen_hotkey, daemon=True).start()
 
-# -------------------
-# Tkinter
-# -------------------
+# -------------------------------------------------<>
+# Tkinter                                           |
+# -------------------------------------------------<>
 root = tk.Tk()
 root.title("Controlador Play/Stop")
 
