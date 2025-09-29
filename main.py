@@ -14,7 +14,6 @@ stop_event = Event()
 # -------------------------------------------------<>   /-----\
 # Funções principais                                |  d|° _ °|p //=======-       --→
 # -------------------------------------------------<>   \__-__/  ||┘
-2
                                                         
 lines = []
 current_index = 0 
@@ -41,9 +40,9 @@ def copy_cnpj():
     if len(clean_line) > 1:
         ultimo_cnpj = clean_line[1]
         pyperclip.copy(clean_line[1])
-        print(f"🍀 CNPJ {current_index+1}: {clean_line[1]} copiado")
+        print(f"CNPJ {current_index+1}: {clean_line[1]} copiado")
     else:
-        print(f"🟥 Linha {current_index+1} inválida:", line)
+        print(f"Linha {current_index+1} inválida:", line)
 
     current_index += 1
     
@@ -69,12 +68,12 @@ async def play_deleted():
 
             if icon:
                 copy_cnpj()
-                print(f"☑️ Ícone principal encontrado em: {icon}")
+                print(f"Ícone principal encontrado em: {icon}")
                 x, y = icon
                 pyautogui.click(x, y + 25)
                 await asyncio.sleep(0.1)
                 pyautogui.hotkey('ctrl', 'v')
-                print("↩️ CTRL + V")
+                print("↩ CTRL + V")
 
             consultar = None
             try:
@@ -95,21 +94,27 @@ async def play_deleted():
             
             cnpj_field = None
             if(cnpj_not_found):
-                print("🟥 CNPJ NOT FOUND ")
-                try:
-                    cnpj_field = pyautogui.locateCenterOnScreen("imgs/imagea.png", confidence=0.8)
-                    if (cnpj_field):
-                        copy_cnpj()
-                        print(f"☑️ Ícone principal encontrado em: {cnpj_field}")
-                        x, y = cnpj_field
-                        pyautogui.click(x, y + 25)
-                        pyautogui.hotkey('ctrl', 'a')
-                        pyautogui.press('backspace')
-                        await asyncio.sleep(0.1)
-                        pyautogui.hotkey('ctrl', 'v')
-                        print("CTRL + V")
-                except pyautogui.ImageNotFoundException:
-                    pass
+                resposta = input(f"Quer continuar'? (s/n): ").strip().lower()
+                print("-----" * 17)
+                if resposta == "s":
+                    print(f"Continuar")
+                    try:
+                        cnpj_field = pyautogui.locateCenterOnScreen("imgs/imagea.png", confidence=0.8)
+                        if (cnpj_field):
+                            copy_cnpj()
+                            print(f"☑️ Ícone principal encontrado em: {cnpj_field}")
+                            x, y = cnpj_field
+                            pyautogui.click(x, y + 25)
+                            pyautogui.hotkey('ctrl', 'a')
+                            pyautogui.press('backspace')
+                            await asyncio.sleep(0.1)
+                            pyautogui.hotkey('ctrl', 'v')
+                            print("CTRL + V")
+                    except pyautogui.ImageNotFoundException:
+                        pass
+                else:
+                    situacao_do_simples = False
+                    print("🟥 CNPJ NOT FOUND ")
                 
             situation_simple_false = None
             situation_simple_true = None
