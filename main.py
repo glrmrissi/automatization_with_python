@@ -111,7 +111,7 @@ async def play_deleted():
                                 pyautogui.click(x, y + 25)
                                 pyautogui.hotkey('ctrl', 'a')
                                 pyautogui.press('backspace')
-                                await asyncio.sleep(0.1)
+                                await asyncio.sleep(0.2)
                                 pyautogui.hotkey('ctrl', 'v')
                                 print("CTRL + V")
                         except Exception as e:
