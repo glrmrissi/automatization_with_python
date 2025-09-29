@@ -94,27 +94,33 @@ async def play_deleted():
             
             cnpj_field = None
             if(cnpj_not_found):
-                resposta = input(f"Quer continuar'? (s/n): ").strip().lower()
                 print("-----" * 17)
-                if resposta == "s":
-                    print(f"Continuar")
-                    try:
+                try:
+                    close_icon = pyautogui.locateCenterOnScreen("imgs/close.png", confidence=0.8)
+                    if(close_icon):
+                        print(f"☑️ Ícone de fechar encontrado em {close_icon}")
+                        pyautogui.click(close_icon)
+                        situacao_do_simples = False
+                        await asyncio.sleep(0.2)
                         cnpj_field = pyautogui.locateCenterOnScreen("imgs/imagea.png", confidence=0.8)
-                        if (cnpj_field):
-                            copy_cnpj()
-                            print(f"☑️ Ícone principal encontrado em: {cnpj_field}")
-                            x, y = cnpj_field
-                            pyautogui.click(x, y + 25)
-                            pyautogui.hotkey('ctrl', 'a')
-                            pyautogui.press('backspace')
-                            await asyncio.sleep(0.1)
-                            pyautogui.hotkey('ctrl', 'v')
-                            print("CTRL + V")
-                    except pyautogui.ImageNotFoundException:
-                        pass
-                else:
+                        try:
+                            if (cnpj_field):
+                                copy_cnpj()
+                                print(f"☑️ Ícone principal encontrado em: {cnpj_field}")
+                                x, y = cnpj_field
+                                pyautogui.click(x, y + 25)
+                                pyautogui.hotkey('ctrl', 'a')
+                                pyautogui.press('backspace')
+                                await asyncio.sleep(0.1)
+                                pyautogui.hotkey('ctrl', 'v')
+                                print("CTRL + V")
+                        except Exception as e:
+                            print("Erro ao processar CNPJ:", e)
+                            pass
+                except pyautogui.ImageNotFoundException:
                     situacao_do_simples = False
                     print("🟥 CNPJ NOT FOUND ")
+                    pass
                 
             situation_simple_false = None
             situation_simple_true = None
